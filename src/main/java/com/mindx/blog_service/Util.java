@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import com.google.gson.Gson;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -16,6 +17,7 @@ public class Util {
     private Util() {}
 
     public static final Gson GSON = new Gson();
+    private static final Random RANDOM = new Random();
 
     public static List<Map<String, Object>> convertResultSetToList(ResultSet rs) throws SQLException {
         ResultSetMetaData md = rs.getMetaData();
@@ -70,6 +72,21 @@ public class Util {
         String json = GSON.toJson(errorResponse);
 
         rc.response().setStatusCode(statusCode).end(new JsonObject(json).encode());
+    }
+
+    public static String generateSalt() {
+        StringBuilder passwordSalt = new StringBuilder();
+        for (int i = 0; i < 6; i++) {
+            int random = RANDOM.nextInt(62);
+            if (random < 10) {
+                passwordSalt.append(random);
+            } else if (random < 36) {
+                passwordSalt.append((char) (random + 55));
+            } else {
+                passwordSalt.append((char) (random + 61));
+            }
+        }
+        return passwordSalt.toString();
     }
 
     public static String hashPassword(String password, String salt) {

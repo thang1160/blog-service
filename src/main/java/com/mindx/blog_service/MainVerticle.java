@@ -36,7 +36,9 @@ public class MainVerticle extends AbstractVerticle {
 
     JWTAuth provider = JWTAuth.create(vertx, config);
 
-    router.post(PREFIX + LOGIN.toString()).handler(ctx -> AuthenticationHandler.login(ctx, provider));
+    router.post(PREFIX + LOGIN).handler(ctx -> AuthenticationHandler.login(ctx, provider));
+
+    router.post(PREFIX + SIGN_UP).handler(AuthenticationHandler::signUp);
 
     router.route().handler(rc -> {
       Cookie cookie = rc.request().getCookie("token");
@@ -53,7 +55,7 @@ public class MainVerticle extends AbstractVerticle {
       }
     });
 
-    router.get(PREFIX + PROFILE.toString()).handler(AuthenticationHandler::profile);
+    router.get(PREFIX + PROFILE).handler(AuthenticationHandler::profile);
 
     // Create the HTTP server
     vertx.createHttpServer()

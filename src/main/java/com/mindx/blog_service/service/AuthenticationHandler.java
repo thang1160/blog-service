@@ -1,5 +1,7 @@
 package com.mindx.blog_service.service;
 
+import java.util.Map;
+import java.util.Random;
 import java.util.logging.Logger;
 import com.mindx.blog_service.Util;
 import com.mindx.blog_service.dao.AccountDAO;
@@ -12,6 +14,33 @@ import io.vertx.ext.web.RoutingContext;
 public class AuthenticationHandler {
     private static final String USERNAME = "username";
     private static final Logger _LOGGER = Logger.getLogger(AuthenticationHandler.class.getName());
+
+    public static void signUp(RoutingContext rc) {
+        rc.vertx().executeBlocking(blockingCodeHandler -> {
+            try {
+                JsonObject json = rc.getBodyAsJson();
+                String username = json.getString(USERNAME);
+                String password = json.getString("password");
+                if (username == null || password == null) {
+                    rc.response().setStatusCode(400).end();
+                    return;
+                }
+                int accountId = AccountDAO.getAccountId(username, password);
+                if (accountId == 0) {
+                    String passwordSalt = Util.generateSalt();
+                    String hashedPassword = Util.hashPassword(password, passwordSalt);
+                    AccountDAO.createAccount(username, hashedPassword, passwordSalt);
+                    rc.response().setStatusCode(200).end();
+                    return;
+                }
+                else {
+                    Util.sendResponse(rc, 400, Map.of("message", "username exist"));
+                }
+            } catch (Exception ex) {
+                blockingCodeHandler.fail(ex);
+            }
+        }, false, null);
+    }
 
     public static void login(RoutingContext rc, JWTAuth jwt) {
         rc.vertx().executeBlocking(blockingCodeHandler -> {
