@@ -2,7 +2,12 @@
 
 image:https://img.shields.io/badge/vert.x-4.2.4-purple.svg[link="https://vertx.io"]
 
-This application was generated using http://start.vertx.io
+Nginx config
+```
+    location /blog/api/v1 {
+        proxy_pass http://127.0.0.1:8888;
+    }
+```
 
 == Building
 
