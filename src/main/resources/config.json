@@ -1,0 +1,14 @@
+{
+    "server": {
+      "port": 8888,
+      "uri_prefix": "/blog/api/v1",
+      "public_key": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxPSbCQY5mBKFDIn1kggv\nWb4ChjrctqD4nFnJOJk4mpuZ/u3h2ZgeKJJkJv8+5oFO6vsEwF7/TqKXp0XDp6IH\nbyaOSWdkl535rCYR5AxDSjwnuSXsSp54pvB+fEEFDPFF81GHixepIbqXCB+BnCTg\nN65BqwNn/1Vgqv6+H3nweNlbTv8e/scEgbg6ZYcsnBBB9kYLp69FSwNWpvPmd60e\n3DWyIo3WCUmKlQgjHL4PHLKYwwKgOHG/aNl4hN4/wqTixCAHe6KdLnehLn71x+Z0\nSyXbWooftefpJP1wMbwlCpH3ikBzVIfHKLWT9QIOVoRgchPU3WAsZv/ePgl5i8Co\nqwIDAQAB\n-----END PUBLIC KEY-----",
+      "private_key": ""
+    },
+    "database": {
+        "url": "jdbc:sqlserver://127.0.0.1:1433",
+        "user": "SA",
+        "password": "sS123456",
+        "databaseName": "MINDX_BLOG"
+    }
+}
