@@ -54,4 +54,25 @@ public class AccountDAO extends Db {
         }
         return accountId;
     }
+
+    public static boolean checkUsernameExist(String username) {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+        ResultSet rs = null;
+        try {
+            conn = getConnection();
+            stmt = conn.prepareStatement("SELECT count(*) as num FROM account WHERE username = ?");
+            stmt.setString(1, username);
+            rs = stmt.executeQuery();
+            if (rs != null && rs.next()) {
+                int num = rs.getInt("num");
+                return num >= 1;
+            }
+        } catch (SQLException ex) {
+            _LOGGER.log(Level.SEVERE, null, ex);
+        } finally {
+            close(rs, stmt, conn);
+        }
+        return false;
+    }
 }

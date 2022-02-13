@@ -92,4 +92,8 @@ public class Util {
     public static String hashPassword(String password, String salt) {
         return DigestUtils.sha256Hex(password + salt);
     }
+
+    public static int getAccountId(RoutingContext rc) {
+        return Integer.parseInt(rc.user().principal().getString("sub"));
+    }
 }

@@ -2,6 +2,7 @@ package com.mindx.blog_service;
 
 import java.util.logging.Logger;
 import com.mindx.blog_service.service.AuthenticationHandler;
+import com.mindx.blog_service.service.BlogHandler;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.http.Cookie;
 import io.vertx.core.http.HttpHeaders;
@@ -56,6 +57,8 @@ public class MainVerticle extends AbstractVerticle {
     });
 
     router.get(PREFIX + PROFILE).handler(AuthenticationHandler::profile);
+    
+    router.post(PREFIX + BLOG).handler(BlogHandler::createBlog);
 
     // Create the HTTP server
     vertx.createHttpServer()

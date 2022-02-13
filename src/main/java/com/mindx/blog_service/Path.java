@@ -5,6 +5,7 @@ public enum Path {
     SIGN_UP("/sign-up"),
     LOGOUT("/logout"),
     PROFILE("/profile"),
+    BLOG("/blog")
     ;
 
     private final String stringPath;

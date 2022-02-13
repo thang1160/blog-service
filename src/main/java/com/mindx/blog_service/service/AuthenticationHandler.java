@@ -1,7 +1,6 @@
 package com.mindx.blog_service.service;
 
 import java.util.Map;
-import java.util.Random;
 import java.util.logging.Logger;
 import com.mindx.blog_service.Util;
 import com.mindx.blog_service.dao.AccountDAO;
@@ -25,8 +24,7 @@ public class AuthenticationHandler {
                     rc.response().setStatusCode(400).end();
                     return;
                 }
-                int accountId = AccountDAO.getAccountId(username, password);
-                if (accountId == 0) {
+                if (!AccountDAO.checkUsernameExist(username)) {
                     String passwordSalt = Util.generateSalt();
                     String hashedPassword = Util.hashPassword(password, passwordSalt);
                     AccountDAO.createAccount(username, hashedPassword, passwordSalt);
@@ -37,6 +35,7 @@ public class AuthenticationHandler {
                     Util.sendResponse(rc, 400, Map.of("message", "username exist"));
                 }
             } catch (Exception ex) {
+                _LOGGER.severe(ex.getMessage());
                 blockingCodeHandler.fail(ex);
             }
         }, false, null);
@@ -61,6 +60,7 @@ public class AuthenticationHandler {
                         new JsonObject().put("sub", accountId).put(USERNAME, username),
                         new JWTOptions().setAlgorithm("RS256").setExpiresInMinutes(120)));
             } catch (Exception ex) {
+                _LOGGER.severe(ex.getMessage());
                 blockingCodeHandler.fail(ex);
             }
         }, false, null);
